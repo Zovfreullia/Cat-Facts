@@ -8,6 +8,7 @@
 
 #import "C4QColorPickerViewController.h"
 
+
 @interface C4QColorPickerViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *blueButton;
@@ -21,9 +22,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     self.blueButton.backgroundColor = [UIColor blueColor];
+    
     self.greenButton.backgroundColor = [UIColor greenColor];
     self.redButton.backgroundColor = [UIColor redColor];
+}
+- (IBAction)redColorButton:(id)sender {
+    
+    [self.delegate userEnterColor:@"red"];
+}
+
+- (IBAction)greenColorButton:(id)sender {
+    [self.delegate userEnterColor:@"green"];
+    
+}
+
+- (IBAction)blueColorButton:(id)sender {
+    [self.delegate userEnterColor:@"blue"];
+    
 }
 
 @end
