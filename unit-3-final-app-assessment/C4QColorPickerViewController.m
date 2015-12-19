@@ -21,12 +21,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    self.blueButton.backgroundColor = [UIColor blueColor];
-    
-    self.greenButton.backgroundColor = [UIColor greenColor];
-    self.redButton.backgroundColor = [UIColor redColor];
 }
 - (IBAction)redColorButton:(id)sender {
     

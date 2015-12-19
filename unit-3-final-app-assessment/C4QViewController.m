@@ -25,18 +25,32 @@
                                @"blue":
                                    ^{
                                        self.view.backgroundColor = [UIColor blueColor];
+                                       NSLog(@"Blue");
                                    },
                                @"red":
                                    ^{
                                        self.view.backgroundColor = [UIColor redColor];
+                                       NSLog(@"Red");
+
                                    },
                                @"green":
                                    ^{
                                        self.view.backgroundColor = [UIColor greenColor];
+                                       NSLog(@"Green");
+
                                    }
                                };
     
     ((ColorBlock)colorzzz[lookForThisShit])();
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([[segue identifier] isEqualToString:@"ColorBoard"]) {
+        
+        C4QColorPickerViewController *vc = segue.destinationViewController;
+        vc.delegate = self;
+    }
+
 }
 
 @end
