@@ -8,10 +8,14 @@
 
 #import "C4QCatFactsTableViewController.h"
 #import "C4QCustomTableViewCell.h"
+#import <AFNetworking/AfNetworking.h>
+#import "APIManager.h"
 
 #define CAT_API_URL @"http://catfacts-api.appspot.com/api/facts?number=100"
 
 @interface C4QCatFactsTableViewController ()
+
+@property (nonatomic) NSMutableArray *catPosts;
 
 @end
 
@@ -19,10 +23,44 @@
 
 
 #pragma mark
+#pragma mark - Networking
+- (void)fetchData {
+    // create an instagram url
+    NSURL *instagramURL = [NSURL URLWithString:@"http://catfacts-api.appspot.com/api/facts?number=100"];
+    
+    // fetch data from the instagram endpoint and print json response
+    [APIManager GETRequestWithURL:instagramURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+        
+        NSArray *cats = [json objectForKey:@"facts"];
+        
+        for (NSString *catPost in cats){
+            [self.catPosts addObject:catPost];
+        }
+        
+        NSLog(@"%@", self.catPosts);
+        
+        [self.tableView reloadData];
+        
+    }];
+}
+
+
+
+
+#pragma mark
 #pragma mark - Life Cycle Methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //set the cat posts
+    self.catPosts = [[NSMutableArray alloc]init];
+    
+    //call networking
+    [self fetchData];
     
     // tell the table view to auto adjust the height of each cell
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -33,6 +71,8 @@
     
     // register the nib for the cell identifer
     [self.tableView registerNib:nib forCellReuseIdentifier:@"C4QCustomCellIdentifier"];
+    
+
 }
 
 
@@ -46,14 +86,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return self.catPosts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     C4QCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"C4QCustomCellIdentifier" forIndexPath:indexPath];
     
-    cell.catFactsLabel.text = @"butt butt buttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbutt butt buttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbutt butt buttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbutt butt buttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbuttbutt";
+    cell.catFactsLabel.text = [self.catPosts objectAtIndex:indexPath.row];
     
     return cell;
 }
