@@ -8,19 +8,26 @@
 
 #import "C4QCatFactsTableViewController.h"
 #import "C4QCustomTableViewCell.h"
-#import <AFNetworking/AfNetworking.h>
 #import "APIManager.h"
+#import "C4QCatFactsDetailViewController.h"
 
 #define CAT_API_URL @"http://catfacts-api.appspot.com/api/facts?number=100"
 
-@interface C4QCatFactsTableViewController ()
+@interface C4QCatFactsTableViewController ()<AddToDefaultDelegate>
 
 @property (nonatomic) NSMutableArray *catPosts;
+@property (nonatomic) NSString *catToPass;
 
 @end
 
 @implementation C4QCatFactsTableViewController
 
+
+#pragma mark
+#pragma mark - User Default Delegate
+- (void)addButtonToDefault:(NSString *)catFact {
+    NSLog(@"%@", catFact);
+}
 
 #pragma mark
 #pragma mark - Networking
@@ -33,7 +40,6 @@
         
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 
-        
         NSArray *cats = [json objectForKey:@"facts"];
         
         for (NSString *catPost in cats){
@@ -55,6 +61,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    C4QCustomTableViewCell *object = [[C4QCustomTableViewCell alloc]init];
+    object.delegate = self;
     
     //set the cat posts
     self.catPosts = [[NSMutableArray alloc]init];
@@ -95,9 +104,38 @@
     
     cell.catFactsLabel.text = [self.catPosts objectAtIndex:indexPath.row];
     
+    cell.catPlusButton.tag = indexPath.row;
+
+        
+    [cell.catPlusButton addTarget:self action:@selector(yourButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+    
     return cell;
 }
 
+-(void)yourButtonClicked:(UIButton*)sender
+{
+            NSLog(@"tesetsts");
+    
+}
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *catFact = [self.catPosts objectAtIndex:indexPath.row];
+    self.catToPass = catFact;
+  
+    [self performSegueWithIdentifier:@"CatDetail" sender:self];
+    
 
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([[segue identifier] isEqualToString:@"CatDetail"]) {
+        
+        C4QCatFactsDetailViewController *dvc = segue.destinationViewController;
+        dvc.catFactDetail = self.catToPass;
+   }
+    
+
+}
 @end

@@ -19,5 +19,8 @@
 
     // Configure the view for the selected state
 }
+- (IBAction)addCatFactToDefaults:(id)sender {
+    [self.delegate addButtonToDefault:@"poop"];
+}
 
 @end

@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol AddToDefaultDelegate <NSObject>
+
+- (void)addButtonToDefault:(NSString *)catFact;
+
+@end
+
 @interface C4QCustomTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *catFactsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *catPlusButton;
+
+@property (weak, nonatomic) id<AddToDefaultDelegate> delegate;
+
 
 @end

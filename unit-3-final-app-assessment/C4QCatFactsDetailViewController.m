@@ -11,6 +11,7 @@
 #define CAT_GIF_URL @"http://api.giphy.com/v1/gifs/search?q=funny+cat&api_key=dc6zaTOxFJmzC";
 
 @interface C4QCatFactsDetailViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *catFactsDetailLabel;
 
 @end
 
@@ -18,6 +19,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.catFactsDetailLabel.text = self.catFactDetail;
+    NSLog(@"%@", self.catFactDetail);
     // Do any additional setup after loading the view.
 }
 

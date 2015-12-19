@@ -19,6 +19,9 @@
                         <rect key="frame" x="126" y="34" width="30" height="66"/>
                         <fontDescription key="fontDescription" type="system" pointSize="45"/>
                         <state key="normal" title="+"/>
+                        <connections>
+                            <action selector="addCatFactToDefaults:" destination="Veh-xI-jgj" eventType="touchUpInside" id="CfC-Sv-gVd"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ff-1Z-rCh">
                         <rect key="frame" x="8" y="8" width="95" height="115"/>
