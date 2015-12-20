@@ -17,6 +17,7 @@
 
 @property (nonatomic) NSMutableArray *catPosts;
 @property (nonatomic) NSString *catToPass;
+@property (nonatomic) NSInteger indexNumDefault;
 
 @end
 
@@ -39,15 +40,13 @@
     [APIManager GETRequestWithURL:instagramURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-
+        
         NSArray *cats = [json objectForKey:@"facts"];
         
         for (NSString *catPost in cats){
             [self.catPosts addObject:catPost];
         }
-        
-        NSLog(@"%@", self.catPosts);
-        
+                
         [self.tableView reloadData];
         
     }];
@@ -81,7 +80,7 @@
     // register the nib for the cell identifer
     [self.tableView registerNib:nib forCellReuseIdentifier:@"C4QCustomCellIdentifier"];
     
-
+    
 }
 
 
@@ -104,28 +103,18 @@
     
     cell.catFactsLabel.text = [self.catPosts objectAtIndex:indexPath.row];
     
-    cell.catPlusButton.tag = indexPath.row;
-
-        
-    [cell.catPlusButton addTarget:self action:@selector(yourButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
     
     return cell;
 }
 
--(void)yourButtonClicked:(UIButton*)sender
-{
-            NSLog(@"tesetsts");
-    
-}
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     NSString *catFact = [self.catPosts objectAtIndex:indexPath.row];
     self.catToPass = catFact;
-  
+    
     [self performSegueWithIdentifier:@"CatDetail" sender:self];
     
-
+    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -134,8 +123,15 @@
         
         C4QCatFactsDetailViewController *dvc = segue.destinationViewController;
         dvc.catFactDetail = self.catToPass;
-   }
-    
-
+    }
 }
+
+//- (void)saveCustomObject:(MyObject *)object key:(NSString *)key {
+//    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:object];
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setObject:encodedObject forKey:key];
+//    [defaults synchronize];
+//
+//}
+
 @end
